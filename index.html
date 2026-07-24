@@ -13,7 +13,6 @@
 
 <!-- ═══════════════════════════════════════════ LOADING SCREEN -->
 <div id="loading-screen">
-  <div class="loading-petals-container" id="loading-petals"></div>
   <div class="loading-content">
 <div class="loading-flower">
   <span class="flower-emoji">🌸</span>
@@ -105,9 +104,12 @@
   <div class="video-modal-petals" id="video-modal-petals"></div>
   <div class="gift-video-container video-modal-container">
     <div class="video-ratio-box">
-      <video id="gift-video" controls playsinline autoplay muted loop preload="auto" controlsList="nodownload">
+      <video id="gift-video" playsinline webkit-playsinline preload="auto" controlsList="nodownload">
         <source src="videos/video1.mp4" type="video/mp4">
       </video>
+      <button class="video-sound-nudge hidden" id="video-sound-nudge" aria-label="Tap for sound">
+        🔊 Tap for sound
+      </button>
       <div class="video-timer-bar" id="video-timer-bar"></div>
     </div>
   </div>

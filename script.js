@@ -100,25 +100,6 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
    LOADING SCREEN
 ════════════════════════════════════════════════════════════════ */
 window.addEventListener('load', () => {
-  const lp = $('loading-petals');
-  if (lp) {
-    for (let i = 0; i < 12; i++) {
-      const p = document.createElement('div');
-      p.className = 'petal';
-      p.textContent = ['🌸', '🌺', '🌷', '🌼', '✿'][randInt(0, 4)];
-      p.style.cssText = `
-        left: ${rand(0, 100)}%;
-        animation-duration: ${rand(4, 8)}s;
-        animation-delay: ${rand(0, 4)}s;
-        font-size: ${rand(12, 24)}px;
-        opacity: 0;
-        position: absolute;
-        pointer-events: none;
-      `;
-      lp.appendChild(p);
-    }
-  }
-
   setTimeout(() => {
     const ls = $('loading-screen');
     if (ls) {
@@ -367,14 +348,24 @@ function showGiftBox() {
     });
   }
   createGiftParticles();
-
+  isGiftOpening = false;
   const wrapper = $('giftbox-wrapper');
   if (wrapper) {
-    wrapper.removeEventListener('click', openGiftBox);
-    wrapper.removeEventListener('touchend', openGiftBox);
-    wrapper.addEventListener('click', openGiftBox, { once: true });
-    wrapper.addEventListener('touchend', openGiftBox, { once: true });
+    wrapper.removeEventListener('click', handleGiftBoxTrigger);
+    wrapper.removeEventListener('touchend', handleGiftBoxTrigger);
+    wrapper.addEventListener('click', handleGiftBoxTrigger);
+    wrapper.addEventListener('touchend', handleGiftBoxTrigger);
   }
+}
+
+let isGiftOpening = false;
+function handleGiftBoxTrigger(e) {
+  if (isGiftOpening) return;
+  isGiftOpening = true;
+  if (e && e.type === 'touchend') {
+    e.preventDefault();
+  }
+  openGiftBox();
 }
 
 function createGiftParticles() {
@@ -414,16 +405,15 @@ function openGiftBox() {
   createLightRays();
   createGiftBurst();
 
-  // Instant Video Modal Launch (350ms right after lid pop!)
-  setTimeout(() => {
-    playGiftVideoModal();
-  }, 350);
+  // Launch Video Modal synchronously within user click event handler for unmuted audio autoplay
+  playGiftVideoModal();
 }
 
 function playGiftVideoModal() {
   const modal = $('videoModal') || $('gift-video-modal');
   const video = $('gift-video') || document.querySelector('video');
   const timerBar = $('video-timer-bar');
+  const soundNudge = $('video-sound-nudge');
 
   if (!modal) {
     const giftScreen = $('giftbox-screen');
@@ -432,16 +422,21 @@ function playGiftVideoModal() {
     return;
   }
 
-  if (video && CONFIG.VIDEO_URL && video.querySelector('source')) {
-    video.querySelector('source').src = CONFIG.VIDEO_URL;
-    video.load();
-  }
+  if (soundNudge) soundNudge.classList.add('hidden');
 
+  // 1. Set video modal to visible immediately
   modal.classList.remove('hidden');
   modal.style.display = 'flex';
-  requestAnimationFrame(() => {
-    modal.classList.add('active');
-  });
+  modal.classList.add('active');
+
+  // Avoid redundant video reloads if source is unchanged
+  if (video && CONFIG.VIDEO_URL && video.querySelector('source')) {
+    const sourceEl = video.querySelector('source');
+    if (sourceEl.getAttribute('src') !== CONFIG.VIDEO_URL) {
+      sourceEl.src = CONFIG.VIDEO_URL;
+      video.load();
+    }
+  }
 
   // Full-Screen Video Modal Petals Spawner
   let videoPetalsInterval = null;
@@ -492,16 +487,25 @@ function playGiftVideoModal() {
     if (hasEnded) return;
     hasEnded = true;
 
+    if (soundNudge) soundNudge.classList.add('hidden');
+
+    if (video) {
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('play', handlePlay);
+      try {
+        video.pause();
+        video.currentTime = 0;
+      } catch (e) {}
+    }
+
     if (videoPetalsInterval) {
       clearInterval(videoPetalsInterval);
       videoPetalsInterval = null;
     }
     if (videoPetalsContainer) {
       videoPetalsContainer.innerHTML = '';
-    }
-
-    if (video) {
-      try { video.pause(); } catch (e) {}
     }
 
     modal.classList.remove('active');
@@ -522,54 +526,84 @@ function playGiftVideoModal() {
     }, 400);
   }
 
-  // FIX: sync timer bar & auto-close duration with the ACTUAL video duration
-  function startTimerBar(durationSeconds) {
-    if (!timerBar) return;
-    timerBar.style.width = '0%';
-    timerBar.style.transition = 'none';
-    requestAnimationFrame(() => {
-      timerBar.style.transition = `width ${durationSeconds}s linear`;
+  function handleTimeUpdate() {
+    if (!timerBar || !video || !video.duration || !isFinite(video.duration)) return;
+    const pct = Math.min(100, Math.max(0, (video.currentTime / video.duration) * 100));
+    timerBar.style.transition = video.paused ? 'none' : 'width 0.1s linear';
+    timerBar.style.width = pct + '%';
+  }
+
+  function handleEnded() {
+    if (timerBar) {
+      timerBar.style.transition = 'none';
       timerBar.style.width = '100%';
-    });
+    }
+    finishVideoTransition();
+  }
+
+  function handlePause() {
+    handleTimeUpdate();
+  }
+
+  function handlePlay() {
+    handleTimeUpdate();
   }
 
   if (video) {
     markUserInteraction();
-    try {
-      video.currentTime = 0;
 
-      const beginPlayback = () => {
-        // duration is only reliable once metadata has loaded
-        const duration = (video.duration && isFinite(video.duration)) ? video.duration : 10;
-        startTimerBar(duration);
+    video.removeEventListener('timeupdate', handleTimeUpdate);
+    video.removeEventListener('ended', handleEnded);
+    video.removeEventListener('pause', handlePause);
+    video.removeEventListener('play', handlePlay);
 
-        // clear any previous fallback timeout before setting a new one
-        if (video._autoCloseTimeout) clearTimeout(video._autoCloseTimeout);
-        video._autoCloseTimeout = setTimeout(finishVideoTransition, duration * 1000);
-      };
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    video.addEventListener('ended', handleEnded);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('play', handlePlay);
 
-      if (video.readyState >= 1 /* HAVE_METADATA */) {
-        beginPlayback();
-      } else {
-        video.addEventListener('loadedmetadata', beginPlayback, { once: true });
-      }
+    if (timerBar) {
+      timerBar.style.transition = 'none';
+      timerBar.style.width = '0%';
+    }
 
-      const playPromise = video.play();
-      if (playPromise) {
-        playPromise.catch(() => {
-          video.muted = true;
-          video.play().catch(() => {});
-        });
-      }
-    } catch (err) {}
+    // Exact order within the click event handler:
+    // Modal is active -> video.currentTime = 0 -> video.muted = false -> video.play()
+    video.loop = false;
+    video.currentTime = 0;
+    video.muted = false;
+
+    const playPromise = video.play();
+    if (playPromise) {
+      playPromise.then(() => {
+        if (soundNudge) soundNudge.classList.add('hidden');
+      }).catch(() => {
+        // Fallback for iOS/browser blocking unmuted autoplay: play muted visually & display "Tap for sound" overlay
+        video.muted = true;
+        video.play().catch(() => {});
+
+        if (soundNudge) {
+          soundNudge.classList.remove('hidden');
+
+          const handleUnmuteTap = (evt) => {
+            if (evt) evt.stopPropagation();
+            video.muted = false;
+            video.play().then(() => {
+              soundNudge.classList.add('hidden');
+            }).catch(() => {});
+            soundNudge.removeEventListener('click', handleUnmuteTap);
+            soundNudge.removeEventListener('touchend', handleUnmuteTap);
+          };
+
+          soundNudge.removeEventListener('click', handleUnmuteTap);
+          soundNudge.removeEventListener('touchend', handleUnmuteTap);
+          soundNudge.addEventListener('click', handleUnmuteTap);
+          soundNudge.addEventListener('touchend', handleUnmuteTap);
+        }
+      });
+    }
   } else {
-    // no video element at all — fallback to a fixed 10s
-    startTimerBar(10);
     setTimeout(finishVideoTransition, 10000);
-  }
-
-  if (video) {
-    video.onended = finishVideoTransition;
   }
 }
 
@@ -1203,17 +1237,3 @@ styleSheet.textContent = `
   @keyframes shake { 0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);} }
 `;
 document.head.appendChild(styleSheet);
-
-document.querySelectorAll('.pin-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    const rect = btn.getBoundingClientRect();
-    const flower = document.createElement('span');
-    flower.className = 'click-flower-pop';
-    flower.textContent = '🌸';
-    flower.style.left = (rect.left + rect.width / 2) + 'px';
-    flower.style.top = (rect.top + rect.height / 2) + 'px';
-    document.body.appendChild(flower);
-
-    setTimeout(() => flower.remove(), 800);
-  });
-});

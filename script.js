@@ -813,55 +813,53 @@ function initRevealObserver() {
    BOUQUET
 ════════════════════════════════════════════════════════════════ */
 function initBouquet() {
-  const container = $('bouquet-flowers');
-  if (!container) return;
-  container.innerHTML = '';
-  const msgEl = $('bouquet-message')?.querySelector('p');
+  const flowers = qsa('.bouquet-flower');
+  const msgCard = $('bouquet-message');
+  const msgEl = msgCard ? msgCard.querySelector('p') : null;
 
-  CONFIG.BOUQUET_FLOWERS.forEach((flower, i) => {
-    const el = document.createElement('div');
-    el.className = 'b-flower';
-    el.style.cssText = `
-      left: ${flower.x}%; top: ${flower.y}%;
-      animation-duration: ${rand(3, 5)}s;
-      animation-delay: ${flower.delay}s;
-      transform: translateX(-50%);
-      z-index: ${10 - i};
-      position: absolute;
-      cursor: pointer;
-    `;
-    el.innerHTML = `<span class="b-flower-emoji" style="font-size:32px;">${flower.emoji}</span>`;
-    const handleTouch = (e) => {
-      e.preventDefault();
-      if (msgEl) activateFlower(el, flower.msg, msgEl);
+  if (!flowers || flowers.length === 0) return;
+
+  flowers.forEach((flowerEl, i) => {
+    const flowerData = CONFIG.BOUQUET_FLOWERS[i] || CONFIG.BOUQUET_FLOWERS[i % CONFIG.BOUQUET_FLOWERS.length];
+
+    const handleActivate = (e) => {
+      if (e.type === 'touchend') {
+        e.preventDefault();
+      }
+      if (msgEl && flowerData) {
+        activateFlower(flowerEl, flowerData.msg, msgEl);
+      }
     };
-    el.addEventListener('mouseenter', () => { if (msgEl) activateFlower(el, flower.msg, msgEl); });
-    el.addEventListener('touchstart', handleTouch, { passive: false });
-    el.style.opacity = '0';
-    el.style.transform = 'translateX(-50%) scale(0)';
-    setTimeout(() => {
-      el.style.transition = `opacity 0.6s ease ${flower.delay}s, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) ${flower.delay}s`;
-      el.style.opacity = '1';
-      el.style.transform = 'translateX(-50%) scale(1)';
-    }, 200);
-    container.appendChild(el);
+
+    flowerEl.addEventListener('click', handleActivate);
+    flowerEl.addEventListener('touchend', handleActivate);
   });
 }
 
 function activateFlower(el, msg, msgEl) {
-  qsa('.b-flower').forEach(f => f.classList.remove('tapped'));
+  qsa('.bouquet-flower').forEach(f => f.classList.remove('tapped'));
   el.classList.add('tapped');
-  msgEl.style.opacity = '0';
-  msgEl.style.transform = 'translateY(8px)';
-  setTimeout(() => {
-    msgEl.textContent = msg;
-    msgEl.style.transition = 'all 0.4s ease';
-    msgEl.style.opacity = '1';
-    msgEl.style.transform = 'translateY(0)';
-  }, 150);
-  const bouquetRect = $('bouquet-container')?.getBoundingClientRect();
-  const elRect = el.getBoundingClientRect();
-  if (bouquetRect) spawnHearts(elRect.left - bouquetRect.left, elRect.top - bouquetRect.top);
+
+  if (msgEl) {
+    msgEl.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+    msgEl.style.opacity = '0';
+    msgEl.style.transform = 'translateY(6px)';
+
+    setTimeout(() => {
+      msgEl.textContent = msg;
+      msgEl.style.opacity = '1';
+      msgEl.style.transform = 'translateY(0)';
+    }, 200);
+  }
+
+  const container = $('bouquet-container');
+  if (container && el) {
+    const containerRect = container.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const x = (elRect.left + elRect.width / 2) - containerRect.left;
+    const y = (elRect.top + elRect.height / 2) - containerRect.top;
+    spawnHearts(x, y);
+  }
 }
 
 function spawnHearts(x, y) {
@@ -869,18 +867,19 @@ function spawnHearts(x, y) {
   if (!container) return;
   for (let i = 0; i < 6; i++) {
     const h = document.createElement('div');
-    h.textContent = ['💕', '🌸', '✨'][randInt(0, 2)];
+    h.textContent = ['💕', '🌸', '✨', '🌷'][randInt(0, 3)];
     h.style.cssText = `
       position: absolute;
       left: ${x}px; top: ${y}px;
-      font-size: ${rand(12, 20)}px;
+      font-size: ${rand(14, 22)}px;
       pointer-events: none;
-      animation: heartRise ${rand(1, 2)}s ease forwards;
-      animation-delay: ${i * 0.1}s;
-      --dx: ${rand(-30, 30)}px;
+      animation: heartRise ${rand(1.2, 2.2)}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      animation-delay: ${i * 0.08}s;
+      --dx: ${rand(-40, 40)}px;
+      z-index: 50;
     `;
     container.appendChild(h);
-    setTimeout(() => h.remove(), 2200);
+    setTimeout(() => h.remove(), 2500);
   }
 }
 

@@ -155,40 +155,977 @@
     </div>
   </section>
 
-  <!-- ──── BOUQUET SECTION -->
+    <!-- ═══════════════════════════════════════════ -->
+  <!-- ──── BOUQUET SECTION — UPDATED -->
+  <!-- ═══════════════════════════════════════════ -->
+
   <section id="bouquet" class="section-bouquet">
-    <div class="section-label reveal-fade">— My First Gift —</div>
-    <h2 class="section-title reveal-up">A Digital Bouquet</h2>
-    <p class="section-subtitle reveal-fade">Each flower holds a little message just for you</p>
-    <div class="bouquet-container reveal-scale" id="bouquet-container">
+
+    <div class="section-label reveal-fade">
+      — My First Gift —
+    </div>
+
+    <h2 class="section-title reveal-up">
+      A Digital Bouquet
+    </h2>
+
+    <p class="section-subtitle reveal-fade">
+      Each flower holds a little message just for you
+    </p>
+
+
+    <div
+      class="bouquet-container reveal-scale"
+      id="bouquet-container"
+    >
+
       <div class="bouquet-glow-bg"></div>
-      <div class="bouquet-flowers" id="bouquet-flowers">
-        <!-- Flowers rendered by JS -->
-      </div>
+
+
+      <!-- ═══════════════════════════════════════ -->
+      <!-- NEW SVG BOUQUET -->
+      <!-- ═══════════════════════════════════════ -->
+
       <div class="bouquet-stem-wrap">
-        <svg class="bouquet-stems" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-          <path d="M150 200 C145 170 130 140 110 100" stroke="#7A9E6A" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M150 200 C150 160 150 130 150 90" stroke="#7A9E6A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          <path d="M150 200 C155 170 170 140 190 100" stroke="#7A9E6A" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M150 195 C140 165 120 145 95 115" stroke="#7A9E6A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M150 195 C160 165 180 145 205 115" stroke="#7A9E6A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M150 195 C135 160 115 155 85 150" stroke="#7A9E6A" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M150 195 C165 160 185 155 215 150" stroke="#7A9E6A" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Leaves -->
-          <ellipse cx="130" cy="145" rx="12" ry="6" fill="#7A9E6A" opacity="0.8" transform="rotate(-30 130 145)"/>
-          <ellipse cx="170" cy="145" rx="12" ry="6" fill="#7A9E6A" opacity="0.8" transform="rotate(30 170 145)"/>
-          <ellipse cx="115" cy="125" rx="10" ry="5" fill="#8AB87A" opacity="0.7" transform="rotate(-45 115 125)"/>
-          <ellipse cx="185" cy="125" rx="10" ry="5" fill="#8AB87A" opacity="0.7" transform="rotate(45 185 125)"/>
+
+        <svg
+          class="bouquet-stems"
+          viewBox="0 0 400 520"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-label="Digital Bouquet"
+        >
+
+          <defs>
+
+            <!-- STEM -->
+
+            <linearGradient
+              id="stemGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+
+              <stop
+                offset="0%"
+                stop-color="#78ad65"
+              />
+
+              <stop
+                offset="50%"
+                stop-color="#477b42"
+              />
+
+              <stop
+                offset="100%"
+                stop-color="#28552d"
+              />
+
+            </linearGradient>
+
+
+            <!-- PINK FLOWER -->
+
+            <radialGradient
+              id="pinkFlower"
+              cx="50%"
+              cy="45%"
+            >
+
+              <stop
+                offset="0%"
+                stop-color="#fff4f5"
+              />
+
+              <stop
+                offset="35%"
+                stop-color="#f7c4d0"
+              />
+
+              <stop
+                offset="75%"
+                stop-color="#df8fa5"
+              />
+
+              <stop
+                offset="100%"
+                stop-color="#c66f88"
+              />
+
+            </radialGradient>
+
+
+            <!-- WHITE CENTER FLOWER -->
+
+            <radialGradient
+              id="whiteFlower"
+              cx="50%"
+              cy="45%"
+            >
+
+              <stop
+                offset="0%"
+                stop-color="#fffdf4"
+              />
+
+              <stop
+                offset="45%"
+                stop-color="#fff8df"
+              />
+
+              <stop
+                offset="80%"
+                stop-color="#ead9b2"
+              />
+
+              <stop
+                offset="100%"
+                stop-color="#d2bc8d"
+              />
+
+            </radialGradient>
+
+
+            <!-- FLOWER CENTER -->
+
+            <radialGradient id="flowerCenter">
+
+              <stop
+                offset="0%"
+                stop-color="#fff5b8"
+              />
+
+              <stop
+                offset="55%"
+                stop-color="#e8b85b"
+              />
+
+              <stop
+                offset="100%"
+                stop-color="#b97b32"
+              />
+
+            </radialGradient>
+
+
+            <!-- RIBBON -->
+
+            <linearGradient
+              id="ribbonGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+
+              <stop
+                offset="0%"
+                stop-color="#f2b4c3"
+              />
+
+              <stop
+                offset="50%"
+                stop-color="#d9849b"
+              />
+
+              <stop
+                offset="100%"
+                stop-color="#b85e78"
+              />
+
+            </linearGradient>
+
+
+            <filter id="flowerGlow">
+
+              <feGaussianBlur
+                stdDeviation="3"
+              />
+
+            </filter>
+
+
+            <filter id="softShadow">
+
+              <feDropShadow
+                dx="0"
+                dy="3"
+                stdDeviation="3"
+                flood-opacity="0.25"
+              />
+
+            </filter>
+
+          </defs>
+
+
+          <!-- ═══════════════════════════════════════ -->
+          <!-- 6 INDIVIDUAL VISIBLE STEMS -->
+          <!-- ═══════════════════════════════════════ -->
+
+          <g
+            class="bouquet-stem-lines"
+            fill="none"
+            stroke="url(#stemGradient)"
+            stroke-width="6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+
+            <!-- STEM 1 — LEFT OUTER -->
+
+            <path
+              d="M70 135 C82 220 135 330 200 405"
+            />
+
+
+            <!-- STEM 2 — LEFT MIDDLE -->
+
+            <path
+              d="M125 105 C135 220 165 335 200 405"
+            />
+
+
+            <!-- STEM 3 — CENTER TALLEST -->
+
+            <path
+              d="M200 65 C188 180 190 300 200 405"
+            />
+
+
+            <!-- STEM 4 — RIGHT CENTER -->
+
+            <path
+              d="M245 85 C240 205 220 330 200 405"
+            />
+
+
+            <!-- STEM 5 — RIGHT MIDDLE -->
+
+            <path
+              d="M290 110 C280 220 240 335 200 405"
+            />
+
+
+            <!-- STEM 6 — RIGHT OUTER -->
+
+            <path
+              d="M335 140 C315 230 265 340 200 405"
+            />
+
+          </g>
+
+
+          <!-- ═══════════════════════════════════════ -->
+          <!-- NATURAL LEAVES -->
+          <!-- ═══════════════════════════════════════ -->
+
+          <g
+            class="bouquet-leaves"
+            fill="#477b42"
+            opacity="0.9"
+          >
+
+            <ellipse
+              cx="100"
+              cy="245"
+              rx="28"
+              ry="11"
+              transform="rotate(-38 100 245)"
+            />
+
+            <ellipse
+              cx="140"
+              cy="310"
+              rx="26"
+              ry="10"
+              transform="rotate(-28 140 310)"
+            />
+
+            <ellipse
+              cx="300"
+              cy="245"
+              rx="28"
+              ry="11"
+              transform="rotate(38 300 245)"
+            />
+
+            <ellipse
+              cx="260"
+              cy="310"
+              rx="26"
+              ry="10"
+              transform="rotate(28 260 310)"
+            />
+
+            <ellipse
+              cx="175"
+              cy="355"
+              rx="22"
+              ry="8"
+              transform="rotate(-20 175 355)"
+            />
+
+            <ellipse
+              cx="225"
+              cy="355"
+              rx="22"
+              ry="8"
+              transform="rotate(20 225 355)"
+            />
+
+          </g>
+
+
+          <!-- ═══════════════════════════════════════ -->
+          <!-- 6 FLOWER HEADS -->
+          <!-- ═══════════════════════════════════════ -->
+
+          <g
+            class="bouquet-flower-heads"
+            filter="url(#softShadow)"
+          >
+
+
+            <!-- FLOWER 1 -->
+
+            <g class="bouquet-flower flower-1">
+
+              <circle
+                cx="70"
+                cy="135"
+                r="8"
+                fill="#f4c5d1"
+                opacity="0.5"
+                filter="url(#flowerGlow)"
+              />
+
+              <g fill="url(#pinkFlower)">
+
+                <ellipse
+                  cx="70"
+                  cy="115"
+                  rx="15"
+                  ry="30"
+                />
+
+                <ellipse
+                  cx="70"
+                  cy="155"
+                  rx="15"
+                  ry="30"
+                />
+
+                <ellipse
+                  cx="50"
+                  cy="135"
+                  rx="30"
+                  ry="15"
+                />
+
+                <ellipse
+                  cx="90"
+                  cy="135"
+                  rx="30"
+                  ry="15"
+                />
+
+                <ellipse
+                  cx="56"
+                  cy="121"
+                  rx="19"
+                  ry="27"
+                  transform="rotate(-45 56 121)"
+                />
+
+                <ellipse
+                  cx="84"
+                  cy="121"
+                  rx="19"
+                  ry="27"
+                  transform="rotate(45 84 121)"
+                />
+
+                <ellipse
+                  cx="56"
+                  cy="149"
+                  rx="19"
+                  ry="27"
+                  transform="rotate(45 56 149)"
+                />
+
+                <ellipse
+                  cx="84"
+                  cy="149"
+                  rx="19"
+                  ry="27"
+                  transform="rotate(-45 84 149)"
+                />
+
+              </g>
+
+              <circle
+                cx="70"
+                cy="135"
+                r="11"
+                fill="url(#flowerCenter)"
+              />
+
+            </g>
+
+
+            <!-- FLOWER 2 -->
+
+            <g class="bouquet-flower flower-2">
+
+              <circle
+                cx="125"
+                cy="105"
+                r="10"
+                fill="#f7cbd6"
+                opacity="0.45"
+                filter="url(#flowerGlow)"
+              />
+
+              <g fill="url(#pinkFlower)">
+
+                <ellipse
+                  cx="125"
+                  cy="80"
+                  rx="17"
+                  ry="34"
+                />
+
+                <ellipse
+                  cx="125"
+                  cy="130"
+                  rx="17"
+                  ry="34"
+                />
+
+                <ellipse
+                  cx="95"
+                  cy="105"
+                  rx="34"
+                  ry="17"
+                />
+
+                <ellipse
+                  cx="155"
+                  cy="105"
+                  rx="34"
+                  ry="17"
+                />
+
+                <ellipse
+                  cx="103"
+                  cy="85"
+                  rx="21"
+                  ry="30"
+                  transform="rotate(-45 103 85)"
+                />
+
+                <ellipse
+                  cx="147"
+                  cy="85"
+                  rx="21"
+                  ry="30"
+                  transform="rotate(45 147 85)"
+                />
+
+                <ellipse
+                  cx="103"
+                  cy="125"
+                  rx="21"
+                  ry="30"
+                  transform="rotate(45 103 125)"
+                />
+
+                <ellipse
+                  cx="147"
+                  cy="125"
+                  rx="21"
+                  ry="30"
+                  transform="rotate(-45 147 125)"
+                />
+
+              </g>
+
+              <circle
+                cx="125"
+                cy="105"
+                r="12"
+                fill="url(#flowerCenter)"
+              />
+
+            </g>
+
+
+            <!-- FLOWER 3 — CENTER TALLEST WHITE -->
+
+            <g class="bouquet-flower flower-3">
+
+              <circle
+                cx="200"
+                cy="65"
+                r="12"
+                fill="#fff7d9"
+                opacity="0.55"
+                filter="url(#flowerGlow)"
+              />
+
+              <g fill="url(#whiteFlower)">
+
+                <ellipse
+                  cx="200"
+                  cy="32"
+                  rx="18"
+                  ry="38"
+                />
+
+                <ellipse
+                  cx="200"
+                  cy="98"
+                  rx="18"
+                  ry="38"
+                />
+
+                <ellipse
+                  cx="167"
+                  cy="65"
+                  rx="38"
+                  ry="18"
+                />
+
+                <ellipse
+                  cx="233"
+                  cy="65"
+                  rx="38"
+                  ry="18"
+                />
+
+                <ellipse
+                  cx="177"
+                  cy="42"
+                  rx="22"
+                  ry="34"
+                  transform="rotate(-45 177 42)"
+                />
+
+                <ellipse
+                  cx="223"
+                  cy="42"
+                  rx="22"
+                  ry="34"
+                  transform="rotate(45 223 42)"
+                />
+
+                <ellipse
+                  cx="177"
+                  cy="88"
+                  rx="22"
+                  ry="34"
+                  transform="rotate(45 177 88)"
+                />
+
+                <ellipse
+                  cx="223"
+                  cy="88"
+                  rx="22"
+                  ry="34"
+                  transform="rotate(-45 223 88)"
+                />
+
+              </g>
+
+              <circle
+                cx="200"
+                cy="65"
+                r="14"
+                fill="url(#flowerCenter)"
+              />
+
+            </g>
+
+
+            <!-- FLOWER 4 -->
+
+            <g class="bouquet-flower flower-4">
+
+              <circle
+                cx="245"
+                cy="85"
+                r="9"
+                fill="#f4c5d1"
+                opacity="0.45"
+                filter="url(#flowerGlow)"
+              />
+
+              <g fill="url(#pinkFlower)">
+
+                <ellipse
+                  cx="245"
+                  cy="60"
+                  rx="16"
+                  ry="32"
+                />
+
+                <ellipse
+                  cx="245"
+                  cy="110"
+                  rx="16"
+                  ry="32"
+                />
+
+                <ellipse
+                  cx="217"
+                  cy="85"
+                  rx="32"
+                  ry="16"
+                />
+
+                <ellipse
+                  cx="273"
+                  cy="85"
+                  rx="32"
+                  ry="16"
+                />
+
+                <ellipse
+                  cx="224"
+                  cy="66"
+                  rx="20"
+                  ry="29"
+                  transform="rotate(-45 224 66)"
+                />
+
+                <ellipse
+                  cx="266"
+                  cy="66"
+                  rx="20"
+                  ry="29"
+                  transform="rotate(45 266 66)"
+                />
+
+                <ellipse
+                  cx="224"
+                  cy="104"
+                  rx="20"
+                  ry="29"
+                  transform="rotate(45 224 104)"
+                />
+
+                <ellipse
+                  cx="266"
+                  cy="104"
+                  rx="20"
+                  ry="29"
+                  transform="rotate(-45 266 104)"
+                />
+
+              </g>
+
+              <circle
+                cx="245"
+                cy="85"
+                r="11"
+                fill="url(#flowerCenter)"
+              />
+
+            </g>
+
+
+            <!-- FLOWER 5 -->
+
+            <g class="bouquet-flower flower-5">
+
+              <circle
+                cx="290"
+                cy="110"
+                r="9"
+                fill="#f4c5d1"
+                opacity="0.45"
+                filter="url(#flowerGlow)"
+              />
+
+              <g fill="url(#pinkFlower)">
+
+                <ellipse
+                  cx="290"
+                  cy="87"
+                  rx="16"
+                  ry="31"
+                />
+
+                <ellipse
+                  cx="290"
+                  cy="133"
+                  rx="16"
+                  ry="31"
+                />
+
+                <ellipse
+                  cx="263"
+                  cy="110"
+                  rx="31"
+                  ry="16"
+                />
+
+                <ellipse
+                  cx="317"
+                  cy="110"
+                  rx="31"
+                  ry="16"
+                />
+
+                <ellipse
+                  cx="270"
+                  cy="92"
+                  rx="19"
+                  ry="28"
+                  transform="rotate(-45 270 92)"
+                />
+
+                <ellipse
+                  cx="310"
+                  cy="92"
+                  rx="19"
+                  ry="28"
+                  transform="rotate(45 310 92)"
+                />
+
+                <ellipse
+                  cx="270"
+                  cy="128"
+                  rx="19"
+                  ry="28"
+                  transform="rotate(45 270 128)"
+                />
+
+                <ellipse
+                  cx="310"
+                  cy="128"
+                  rx="19"
+                  ry="28"
+                  transform="rotate(-45 310 128)"
+                />
+
+              </g>
+
+              <circle
+                cx="290"
+                cy="110"
+                r="11"
+                fill="url(#flowerCenter)"
+              />
+
+            </g>
+
+
+            <!-- FLOWER 6 -->
+
+            <g class="bouquet-flower flower-6">
+
+              <circle
+                cx="335"
+                cy="140"
+                r="8"
+                fill="#f4c5d1"
+                opacity="0.45"
+                filter="url(#flowerGlow)"
+              />
+
+              <g fill="url(#pinkFlower)">
+
+                <ellipse
+                  cx="335"
+                  cy="118"
+                  rx="15"
+                  ry="28"
+                />
+
+                <ellipse
+                  cx="335"
+                  cy="162"
+                  rx="15"
+                  ry="28"
+                />
+
+                <ellipse
+                  cx="310"
+                  cy="140"
+                  rx="28"
+                  ry="15"
+                />
+
+                <ellipse
+                  cx="360"
+                  cy="140"
+                  rx="28"
+                  ry="15"
+                />
+
+                <ellipse
+                  cx="316"
+                  cy="127"
+                  rx="18"
+                  ry="25"
+                  transform="rotate(-45 316 127)"
+                />
+
+                <ellipse
+                  cx="354"
+                  cy="127"
+                  rx="18"
+                  ry="25"
+                  transform="rotate(45 354 127)"
+                />
+
+                <ellipse
+                  cx="316"
+                  cy="153"
+                  rx="18"
+                  ry="25"
+                  transform="rotate(45 316 153)"
+                />
+
+                <ellipse
+                  cx="354"
+                  cy="153"
+                  rx="18"
+                  ry="25"
+                  transform="rotate(-45 354 153)"
+                />
+
+              </g>
+
+              <circle
+                cx="335"
+                cy="140"
+                r="10"
+                fill="url(#flowerCenter)"
+              />
+
+            </g>
+
+          </g>
+
+
+          <!-- ═══════════════════════════════════════ -->
+          <!-- CENTRAL BINDING POINT -->
+          <!-- ═══════════════════════════════════════ -->
+
+          <circle
+            class="bouquet-binding-point"
+            cx="200"
+            cy="405"
+            r="8"
+            fill="#376336"
+          />
+
+
+          <!-- ═══════════════════════════════════════ -->
+          <!-- RIBBON -->
+          <!-- ═══════════════════════════════════════ -->
+
+          <g class="bouquet-ribbon-svg">
+
+            <!-- LEFT RIBBON LOOP -->
+
+            <path
+              class="ribbon-loop ribbon-loop-left"
+              d="
+                M200 405
+                C175 380 135 382 140 405
+                C145 425 180 420 200 410
+                Z
+              "
+              fill="url(#ribbonGradient)"
+            />
+
+
+            <!-- RIGHT RIBBON LOOP -->
+
+            <path
+              class="ribbon-loop ribbon-loop-right"
+              d="
+                M200 405
+                C225 380 265 382 260 405
+                C255 425 220 420 200 410
+                Z
+              "
+              fill="url(#ribbonGradient)"
+            />
+
+
+            <!-- CENTER KNOT -->
+
+            <circle
+              class="ribbon-center"
+              cx="200"
+              cy="407"
+              r="12"
+              fill="#c86f88"
+            />
+
+
+            <!-- LEFT RIBBON TAIL -->
+
+            <path
+              class="ribbon-tail ribbon-tail-left"
+              d="
+                M193 414
+                C185 445 170 475 155 505
+                L195 485
+                L202 415
+                Z
+              "
+              fill="url(#ribbonGradient)"
+            />
+
+
+            <!-- RIGHT RIBBON TAIL -->
+
+            <path
+              class="ribbon-tail ribbon-tail-right"
+              d="
+                M207 414
+                C215 445 230 475 245 505
+                L205 485
+                L198 415
+                Z
+              "
+              fill="url(#ribbonGradient)"
+            />
+
+          </g>
+
         </svg>
+
       </div>
-      <div class="bouquet-ribbon">
-        <div class="ribbon-knot"></div>
-      </div>
-      <div class="bouquet-particles" id="bouquet-particles"></div>
+
+
+      <div
+        class="bouquet-particles"
+        id="bouquet-particles"
+      ></div>
+
     </div>
-    <div class="bouquet-message glass-card reveal-fade" id="bouquet-message">
-      <p>Touch each flower to reveal its message 💕</p>
+
+
+    <div
+      class="bouquet-message glass-card reveal-fade"
+      id="bouquet-message"
+    >
+
+      <p>
+        Touch each flower to reveal its message 💕
+      </p>
+
     </div>
+
   </section>
 
   <!-- ──── LETTER SECTION -->

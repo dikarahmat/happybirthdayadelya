@@ -99,19 +99,53 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 /* ════════════════════════════════════════════════════════════════
    LOADING SCREEN
 ════════════════════════════════════════════════════════════════ */
-window.addEventListener('load', () => {
+function initLoadingScreen() {
+  createLoadingPetals();
+
+  const totalDuration = 3000; // Exact 3 seconds total loading screen duration
+  const fadeDuration = 800;   // 0.8s smooth opacity fade out
+  const visibleDuration = totalDuration - fadeDuration; // 2200ms before starting fade
+
   setTimeout(() => {
     const ls = $('loading-screen');
     if (ls) {
-      ls.style.transition = 'opacity 0.8s ease';
+      ls.style.transition = `opacity ${fadeDuration / 1000}s ease`;
       ls.style.opacity = '0';
       setTimeout(() => {
         ls.style.display = 'none';
         showPinScreen();
-      }, 800);
+      }, fadeDuration);
+    } else {
+      showPinScreen();
     }
-  }, 2200);
-});
+  }, visibleDuration);
+}
+
+function createLoadingPetals() {
+  const container = $('loading-petals');
+  if (!container) return;
+  const emojis = ['🌸', '🌺', '🌷', '✿'];
+  for (let i = 0; i < 12; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = emojis[i % emojis.length];
+    p.style.cssText = `
+      left: ${rand(0, 100)}%;
+      animation-duration: ${rand(3, 7)}s;
+      animation-delay: ${rand(0, 2)}s;
+      font-size: ${rand(14, 26)}px;
+      position: absolute;
+      pointer-events: none;
+    `;
+    container.appendChild(p);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLoadingScreen);
+} else {
+  initLoadingScreen();
+}
 
 /* ════════════════════════════════════════════════════════════════
    PIN SCREEN

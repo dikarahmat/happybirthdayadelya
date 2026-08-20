@@ -37,7 +37,7 @@ const CONFIG = {
 
   TIMELINE: [
     { date: 'The Very Beginning', title: 'First Time We Met', desc: 'The day the world seemed to spin a little faster and everything felt different from before.', emoji: '✨' },
-    { date: 'A Magical Moment', title: 'Our First Conversation', desc: 'The first words spoken, the first laughter shared — the beginning of thousands of stories we would write together.', emoji: '💬' },
+    { date: 'A Magical Moment', title: 'Our First Conversation', desc: 'The first words spoken, the first laughter shared - the beginning of thousands of stories we would write together.', emoji: '💬' },
     { date: 'A Beautiful Memory', title: 'Our First Outing', desc: 'A small adventure that felt like a trip to the best place on earth, simply because you were there.', emoji: '🌿' },
     { date: 'A Precious Moment', title: 'Laughter That Never Ended', desc: 'The moment we laughed until it hurt and I realised this is a feeling I want to hold on to forever.', emoji: '😄' },
     { date: 'A Sweet Memory', title: 'Beautiful Silence Together', desc: 'The comfortable quiet beside you feels warmer than a thousand words ever could.', emoji: '🌙' },
